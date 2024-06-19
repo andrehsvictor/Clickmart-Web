@@ -1,0 +1,23 @@
+services:
+  api:
+    image: andrehsvictor/clickmart-api
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/clickmart
+      - POSTGRES_PASSWORD=postgres
+    depends_on:
+      - db
+    networks:
+      - clickmart
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      - clickmart
+    ports:
+      - "5432:5432"
+networks:
+  clickmart:
+    driver: bridge
