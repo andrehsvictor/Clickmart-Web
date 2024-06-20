@@ -110,8 +110,8 @@ const App = () => {
           onSave={(product) => {
             console.log(product);
             handleEditProduct(product);
-            setTrigger(trigger + 1);
             setShowEditModal(false);
+            setTrigger(trigger + 1);
           }}
           product={editProduct}
         />
