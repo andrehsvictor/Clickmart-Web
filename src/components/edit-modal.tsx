@@ -18,6 +18,10 @@ export default function EditModal({
   const [price, setPrice] = useState(product.price);
   const [quantity, setQuantity] = useState(product.quantity);
   const [description, setDescription] = useState(product.description);
+  const [disabled, setDisabled] = useState(false);
+  const [nameError, setNameError] = useState(false);
+  const [priceError, setPriceError] = useState(false);
+  const [quantityError, setQuantityError] = useState(false);
 
   return (
     isOpen && (
@@ -48,9 +52,26 @@ export default function EditModal({
                 type="text"
                 id="name"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-md"
+                onChange={(e) => {
+                  if (e.target.value.length < 1) {
+                    setNameError(true);
+                    setDisabled(true);
+                    setName(e.target.value);
+                  } else {
+                    setNameError(false);
+                    setDisabled(false);
+                    setName(e.target.value);
+                  }
+                }}
+                className={`w-full p-2 border border-gray-300 rounded-md ${
+                  nameError ? "border-red-500" : ""
+                }`}
               />
+              {nameError && (
+                <p className="text-red-500 text-sm">
+                  Name is required &#x26A0;
+                </p>
+              )}
             </div>
             <div className="mb-4">
               <label htmlFor="price" className="block text-lg font-semibold">
@@ -60,9 +81,26 @@ export default function EditModal({
                 type="number"
                 id="price"
                 value={price}
-                onChange={(e) => setPrice(+e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-md"
+                onChange={(e) => {
+                  if (+e.target.value < 1) {
+                    setPriceError(true);
+                    setDisabled(true);
+                    setPrice(+e.target.value);
+                  } else {
+                    setPriceError(false);
+                    setDisabled(false);
+                    setPrice(+e.target.value);
+                  }
+                }}
+                className={`w-full p-2 border border-gray-300 rounded-md ${
+                  priceError ? "border-red-500" : ""
+                }`}
               />
+              {priceError && (
+                <p className="text-red-500 text-sm">
+                  Price must be greater than 0 &#x26A0;
+                </p>
+              )}
             </div>
             <div className="mb-4">
               <label htmlFor="quantity" className="block text-lg font-semibold">
@@ -100,7 +138,8 @@ export default function EditModal({
               </button>
               <button
                 type="submit"
-                className="bg-blue-500 text-white px-4 py-2 rounded-md ml-4"
+                disabled={disabled}
+                className="bg-blue-500 text-white px-4 py-2 rounded-md ml-4 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Save
               </button>
