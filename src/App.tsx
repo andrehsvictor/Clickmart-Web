@@ -1,14 +1,14 @@
 import Header from "./components/header";
 import ProductList from "./components/product-list";
 import ProductItem from "./components/product-item";
-import useFetchProducts from "./hooks/useFetchProducts";
+import useFetchProducts from "./hooks/fetch-products";
 import { useState } from "react";
 import EditModal from "./components/edit-modal";
 import { Product } from "./types/Product";
-import useEditProduct from "./hooks/useEditProduct";
-import useDeleteProduct from "./hooks/useDeleteProduct";
+import useEditProduct from "./hooks/edit-product";
+import useDeleteProduct from "./hooks/delete-product";
 import AddModal from "./components/add-modal";
-import useAddProduct from "./hooks/useAddProduct";
+import useAddProduct from "./hooks/add-product";
 
 const App = () => {
   const { products, setTrigger, trigger } = useFetchProducts();
@@ -49,7 +49,7 @@ const App = () => {
           product={product}
           onDelete={(id) => {
             handleDeleteProduct(id);
-            setTrigger(trigger + 1);
+            setTrigger(!trigger);
           }}
           onEdit={() => {
             setShowEditModal(true);
@@ -64,11 +64,12 @@ const App = () => {
           product={product}
           onDelete={(id) => {
             handleDeleteProduct(id);
-            setTrigger(trigger + 1);
+            setTrigger(!trigger);
           }}
           onEdit={() => {
             setShowEditModal(true);
             setEditProduct(product);
+            setTrigger(!trigger);
           }}
         />
       ));
@@ -110,8 +111,8 @@ const App = () => {
           onSave={(product) => {
             console.log(product);
             handleEditProduct(product);
-            setTrigger(trigger + 1);
             setShowEditModal(false);
+            setTrigger(!trigger);
           }}
           product={editProduct}
         />
@@ -123,8 +124,8 @@ const App = () => {
           onSave={(product) => {
             console.log(product);
             handleAddProduct(product);
-            setTrigger(trigger + 1);
             setShowAddModal(false);
+            setTrigger(!trigger);
           }}
         />
       )}
